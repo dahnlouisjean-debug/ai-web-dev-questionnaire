@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Questionnaire Projet Web - Assistant IA</title>
+  <meta name="description" content="Questionnaire complet pour définir votre projet web et générer un prompt IA personnalisé." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb;
+      --accent:#22d3ee; --accent-2:#60a5fa; --danger:#ef4444; --ok:#22c55e;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+    header{padding:24px 16px;text-align:center;border-bottom:1px solid #1f2937;background:linear-gradient(180deg,#0b1220,transparent)}
+    h1{font-size:28px;margin:0 0 6px}
+    p.sub{margin:0;color:var(--muted)}
+    main{max-width:1100px;margin:24px auto;padding:0 16px 64px}
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(12,1fr)}
+    .card{grid-column:span 12;background:var(--panel);border:1px solid #1f2937;border-radius:14px;padding:18px}
+    @media(min-width:860px){.card.half{grid-column:span 6}}
+    label{display:block;font-weight:600;margin:10px 0 6px}
+    input,select,textarea{width:100%;background:#0b1220;color:var(--text);border:1px solid #1f2937;border-radius:10px;padding:10px 12px}
+    textarea{min-height:92px;resize:vertical}
+    .hint{color:var(--muted);font-size:12px;margin-top:4px}
+    .inline{display:flex;gap:8px;flex-wrap:wrap}
+    .inline > *{flex:1 1 180px}
+    fieldset{border:1px dashed #334155;border-radius:12px;padding:12px;margin:12px 0}
+    legend{padding:0 6px;color:var(--muted)}
+    .actions{position:sticky;bottom:0;background:linear-gradient(180deg,transparent,#0f172a 30%);padding:16px;margin-top:24px;border-top:1px solid #1f2937}
+    button{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#0b1220;border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}
+    .secondary{background:#0b1220;color:var(--text);border:1px solid #1f2937}
+    .output{white-space:pre-wrap;background:#070b13;border:1px solid #1f2937;border-radius:12px;padding:14px;margin-top:12px}
+    .badge{display:inline-block;background:#0b1220;border:1px solid #1f2937;border-radius:999px;padding:4px 10px;color:var(--muted);font-size:12px}
+    .two{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:1040px){.two{grid-template-columns:1.2fr .8fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Questionnaire Projet Web</h1>
+    <p class="sub">Remplissez ce formulaire ultra-complet. Un prompt IA sur‑mesure sera généré à la fin, prêt à copier‑coller.</p>
+    <span class="badge">Les réponses seront prises en compte automatiquement par l'assistant IA avant de démarrer le travail.</span>
+  </header>
+  <main>
+    <div class="two">
+      <form id="form" class="grid" autocomplete="on">
+        <!-- IDENTITÉ & CONTACT -->
+        <div class="card">
+          <h2>1) Identité & Contact</h2>
+          <div class="inline">
+            <div>
+              <label>Nom du projet</label>
+              <input name="project_name" placeholder="ex: NovaShop, PortFolio Louis, SaaS Metrics" required />
+              <div class="hint">Un nom clair aide pour le repo GitHub et le branding.</div>
+            </div>
+            <div>
+              <label>Votre rôle</label>
+              <select name="user_role">
+                <option>Fondateur / CEO</option>
+                <option>Indépendant / Freelance</option>
+                <option>PM / Chef de produit</option>
+                <option>Marketing / Growth</option>
+                <option>Développeur</option>
+                <option>Designer</option>
+                <option>Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="inline">
+            <div>
+              <label>Email (pour livrables)</label>
+              <input type="email" name="email" placeholder="vous@example.com" />
+            </div>
+            <div>
+              <label>Langue de livraison</label>
+              <select name="language">
+                <option>Français</option>
+                <option>English</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- TYPE D'APPLICATION & SECTEUR -->
+        <div class="card">
+          <h2>2) Type d'application & Secteur</h2>
+          <div class="inline">
+            <div>
+              <label>Type principal</label>
+              <select name="app_type">
+                <option>Site vitrine / Portfolio</option>
+                <option>E-commerce / Boutique</option>
+                <option>Blog / Magazine / CMS</option>
+                <option>Application SaaS</option>
+                <option>PWA / Mobile-first</option>
+                <option>Plateforme communautaire</option>
+                <option>Jeu web</option>
+                <option>Dashboard / Analytics</option>
+                <option>Institutionnel / Éducation</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div>
+              <label>Secteur</label>
+              <input name="industry" placeholder="ex: Retail, Éducation, Santé, Immobilier, Musique…" />
+            </div>
+          </div>
+          <label>Objectif business principal</label>
+          <select name="business_goal">
+            <option>Présenter une activité</option>
+            <option>Vendre des produits/services</option>
+            <option>Générer des leads</option>
+            <option>Fidéliser une communauté</option>
+            <option>Offrir un service en ligne</option>
+            <option>Divertir les utilisateurs</option>
+            <option>Autre</option>
+          </select>
+          <label>Monétisation</label>
+          <select name="monetization">
+            <option>Aucune</option>
+            <option>Vente one‑shot</option>
+            <option>Abonnement (SaaS)</option>
+            <option>Publicité</option>
+            <option>Freemium</option>
+            <option>Marketplace (commissions)</option>
+            <option>Autre</option>
+          </select>
+        </div>
+
+        <!-- AUDIENCE -->
+        <div class="card">
+          <h2>3) Audience & Marché</h2>
+          <div class="inline">
+            <div>
+              <label>Personas principaux</label>
+              <input name="personas" placeholder="ex: Étudiants 18‑25, PME, Artistes, Gamers…" />
+            </div>
+            <div>
+              <label>Zones géographiques</label>
+              <input name="geo" placeholder="ex: France, Europe, US, Monde" />
+            </div>
+          </div>
+          <div class="inline">
+            <div>
+              <label>Taille d'audience estimée</label>
+              <select name="audience_size">
+                <option>Petite (&lt; 1k)</option>
+                <option>Moyenne (1k – 50k)</option>
+                <option>Grande (50k – 1M)</option>
+                <option>Massive (&gt; 1M)</option>
+              </select>
+            </div>
+            <div>
+              <label>Concurrents connus</label>
+              <input name="competitors" placeholder="Listez des sites concurrents (URLs)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTRAINTES & DÉLAIS -->
+        <div class="card half">
+          <h2>4) Contraintes & Délais</h2>
+          <div class="inline">
+            <div>
+              <label>Budget (indicatif)</label>
+              <select name="budget">
+                <option>Minimal / Gratuit</option>
+                <option>&lt; 500 €</option>
+                <option>500 – 2 000 €</option>
+                <option>2 000 – 10 000 €</option>
+                <option>&gt; 10 000 €</option>
+              </select>
+            </div>
+            <div>
+              <label>Délai souhaité</label>
+              <select name="timeline">
+                <option>48 h</option>
+                <option>1 semaine</option>
+                <option>2–4 semaines</option>
+                <option>1–3 mois</option>
+                <option>&gt; 3 mois</option>
+              </select>
+            </div>
+          </div>
+          <label>Contraintes particulières</label>
+          <textarea name="constraints" placeholder="ex: RGPD strict, offline, SEO fort, accessibilité AA, hébergement en UE…"></textarea>
+        </div>
+
+        <!-- PRÉFÉRENCES TECHNIQUES -->
+        <div class="card half">
+          <h2>5) Préférences techniques</h2>
+          <div class="inline">
+            <div>
+              <label>Front‑end préféré</label>
+              <select name="frontend">
+                <option>HTML/CSS/JS vanilla</option>
+                <option>React</option>
+                <option>Vue</option>
+                <option>Angular</option>
+                <option>Svelte</option>
+                <option>Autre / Pas de préférence</option>
+              </select>
+            </div>
+            <div>
+              <label>Back‑end</label>
+              <select name="backend">
+                <option>Aucun (site statique)</option>
+                <option>Node.js (Express/Nest)</option>
+                <option>Python (FastAPI/Django)</option>
+                <option>PHP (Laravel/Symfony)</option>
+                <option>Autre / Pas de préférence</option>
+              </select>
+            </div>
+          </div>
+          <div class="inline">
+            <div>
+              <label>Base de données</label>
+              <select name="database">
+                <option>Aucune</option>
+                <option>SQLite</option>
+                <option>PostgreSQL</option>
+                <option>MySQL/MariaDB</option>
+                <option>MongoDB</option>
+                <option>Firestore</option>
+              </select>
+            </div>
+            <div>
+              <label>Hébergement cible</label>
+              <select name="hosting">
+                <option>GitHub Pages (gratuit)</option>
+                <option>Netlify</option>
+                <option>Vercel</option>
+                <option>Firebase Hosting</option>
+                <option>OVH / VPS</option>
+                <option>AWS / Azure / GCP</option>
+              </select>
+            </div>
+          </div>
+          <label>CI/CD & DevOps souhaités</label>
+          <select name="cicd">
+            <option>Simple (tests + build)</option>
+            <option>Complet (tests, lint, audit, déploiement)</option>
+            <option>Manuel (pas d'automatisation)</option>
+          </select>
+        </div>
+
+        <!-- UX / UI -->
+        <div class="card">
+          <h2>6) UX / UI & Design System</h2>
+          <div class="inline">
+            <div>
+              <label>Style visuel</label>
+              <select name="style">
+                <option>Minimaliste</option>
+                <option>Corporate</option>
+                <option>Créatif</option>
+                <option>Dark / Neon</option>
+                <option>Éditorial / Magazine</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div>
+              <label>Palette / Couleurs</label>
+              <input name="colors" placeholder="ex: #111827, #22d3ee, #60a5fa…" />
+            </div>
+          </div>
+          <div class="inline">
+            <div>
+              <label>Typographies</label>
+              <input name="fonts" placeholder="ex: Inter, Poppins, Roboto…" />
+            </div>
+            <div>
+              <label>Design system</label>
+              <select name="design_system">
+                <option>Tailwind CSS</option>
+                <option>Bootstrap</option>
+                <option>Material UI</option>
+                <option>Sans framework</option>
+              </select>
+            </div>
+          </div>
+          <fieldset>
+            <legend>Accessibilité & Responsive</legend>
+            <div class="inline">
+              <div>
+                <label>Accessibilité</label>
+                <select name="a11y">
+                  <option>Base</option>
+                  <option>WCAG AA</option>
+                  <option>WCAG AAA</option>
+                </select>
+              </div>
+              <div>
+                <label>Responsive</label>
+                <select name="responsive">
+                  <option>Mobile‑first</option>
+                  <option>Desktop‑first</option>
+                  <option>Adaptatif</option>
+                </select>
+              </div>
+              <div>
+                <label>Animations</label>
+                <select name="animations">
+                  <option>Légères</option>
+                  <option>Riches</option>
+                  <option>Aucune</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- FONCTIONNALITÉS -->
+        <div class="card">
+          <h2>7) Fonctionnalités</h2>
+          <label>Fonctionnalités essentielles</label>
+          <textarea name="core_features" placeholder="ex: Auth, panier, recherche, filtres, favoris, commentaires, upload…"></textarea>
+          <label>Fonctionnalités avancées</label>
+          <textarea name="advanced_features" placeholder="ex: PWA offline, notifications push, analytics, A/B testing, IA…"></textarea>
+          <label>Pages indispensables</label>
+          <input name="pages" placeholder="ex: Accueil, À propos, Contact, Blog, Boutique, FAQ…" />
+          <label>Contenus disponibles</label>
+          <textarea name="content" placeholder="ex: Textes, images, logo, vidéos, fiche produits, datas…"></textarea>
+        </div>
+
+        <!-- INTÉGRATIONS & APIs -->
+        <div class="card half">
+          <h2>8) Intégrations & APIs</h2>
+          <label>Intégrations souhaitées</label>
+          <textarea name="integrations" placeholder="ex: Stripe, PayPal, Auth0, Firebase, Google Analytics, Mailchimp, Mapbox…"></textarea>
+          <label>Clés API déjà disponibles ?</label>
+          <select name="api_keys">
+            <option>Oui</option>
+            <option>Non</option>
+            <option>Partiellement</option>
+          </select>
+        </div>
+
+        <!-- SEO, SÉCURITÉ, LÉGAL -->
+        <div class="card half">
+          <h2>9) SEO, Sécurité & Légal</h2>
+          <div class="inline">
+            <div>
+              <label>Niveau SEO</label>
+              <select name="seo">
+                <option>Basique</option>
+                <option>Avancé (schema, sitemap, i18n)</option>
+                <option>Expert (stratégie mots‑clés)</option>
+              </select>
+            </div>
+            <div>
+              <label>Niveau de sécurité</label>
+              <select name="security">
+                <option>Standard</option>
+                <option>Renforcé (OWASP)</option>
+                <option>Enterprise (audits réguliers)</option>
+              </select>
+            </div>
+          </div>
+          <label>Conformité légale</label>
+          <select name="legal">
+            <option>RGPD EU</option>
+            <option>CCPA US</option>
+            <option>Autres (précisez en contraintes)</option>
+          </select>
+        </div>
+
+        <!-- DEVOPS & QUALITÉ -->
+        <div class="card half">
+          <h2>10) Qualité & Tests</h2>
+          <label>Tests souhaités</label>
+          <select name="tests">
+            <option>Unitaires</option>
+            <option>Intégration</option>
+            <option>E2E (bout‑en‑bout)</option>
+            <option>Performance</option>
+            <option>Accessibilité</option>
+            <option>Tout</option>
+          </select>
+          <label>Pipeline CI/CD</label>
+          <select name="pipeline">
+            <option>Basique</option>
+            <option>Complet</option>
+            <option>Personnalisé</option>
+          </select>
+        </div>
+
+        <!-- MAINTENANCE & ÉVOLUTION -->
+        <div class="card half">
+          <h2>11) Maintenance & Évolution</h2>
+          <label>Fréquence de mise à jour</label>
+          <select name="update_freq">
+            <option>Hebdomadaire</option>
+            <option>Mensuelle</option>
+            <option>Trimestrielle</option>
+          </select>
+          <label>Roadmap souhaitée</label>
+          <textarea name="roadmap" placeholder="ex: Phase 1 (MVP), Phase 2 (mobile), Phase 3 (monétisation)…"></textarea>
+        </div>
+
+        <!-- MOBILE -->
+        <div class="card">
+          <h2>12) Mobile & Apps</h2>
+          <div class="inline">
+            <div>
+              <label>Stratégie mobile</label>
+              <select name="mobile_strategy">
+                <option>PWA</option>
+                <option>React Native</option>
+                <option>Flutter</option>
+                <option>Cordova/Ionic</option>
+                <option>Indécis (conseil)</option>
+              </select>
+            </div>
+            <div>
+              <label>Fonctionnalités natives</label>
+              <input name="mobile_features" placeholder="ex: push, caméra, GPS, contacts…" />
+            </div>
+          </div>
+        </div>
+
+        <!-- DIVERS -->
+        <div class="card">
+          <h2>13) Divers & Liens utiles</h2>
+          <label>Références / Inspirations (URLs)</label>
+          <textarea name="references" placeholder="Collez des liens de sites que vous aimez"></textarea>
+          <label>Liens existants (domaine, logo, Notion, Drive…)</label>
+          <textarea name="links" placeholder="Collez vos liens utiles"></textarea>
+          <label>Commentaires libres</label>
+          <textarea name="notes" placeholder="Ajoutez toute précision utile"></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="generate">Générer le prompt personnalisé</button>
+          <button type="reset" class="secondary">Effacer</button>
+          <div id="out" class="output" hidden></div>
+        </div>
+      </form>
+
+      <section class="card">
+        <h2>Comment ça marche ?</h2>
+        <ol>
+          <li>Remplissez le questionnaire (le plus complet possible).</li>
+          <li>Cliquez sur « Générer le prompt ».</li>
+          <li>Copiez/collez le prompt dans l'assistant IA.</li>
+          <li>L'IA utilisera ces réponses AVANT de démarrer le travail pour créer votre projet.</li>
+        </ol>
+        <p class="hint">Astuce : plus vos réponses sont précises, plus le résultat sera pertinent et rapide.</p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function serialize(form){
+      const data = {};
+      new FormData(form).forEach((v,k)=>{ data[k] = v.trim ? v.trim() : v });
+      return data;
+    }
+    function mdEscape(s=""){return s.replace(/[`*_#>~|]/g, m=>"\\"+m)}
+    function block(label,val){ if(!val) return ""; return `\n**${label}:** ${mdEscape(val)}` }
+
+    const basePrompt = (d)=>`
+Tu es un Assistant IA Expert Multi-Spécialisé. AVANT de commencer, tu DOIS impérativement prendre en compte les réponses au questionnaire ci‑dessous pour orienter toutes tes décisions, puis exécuter la méthodologie décrite dans le prompt principal.
+
+=== CONTEXTE QUESTIONNAIRE (À PRENDRE EN COMPTE AVANT TOUT) ===
+${block('Nom du projet', d.project_name)}
+${block('Rôle', d.user_role)}
+${block('Email', d.email)}
+${block('Langue', d.language)}
+${block("Type d'application", d.app_type)}
+${block('Secteur', d.industry)}
+${block('Objectif business', d.business_goal)}
+${block('Monétisation', d.monetization)}
+${block('Personas', d.personas)}
+${block('Zones géographiques', d.geo)}
+${block("Taille d'audience", d.audience_size)}
+${block('Concurrents', d.competitors)}
+${block('Budget', d.budget)}
+${block('Délai', d.timeline)}
+${block('Contraintes', d.constraints)}
+${block('Front‑end', d.frontend)}
+${block('Back‑end', d.backend)}
+${block('Base de données', d.database)}
+${block('Hébergement', d.hosting)}
+${block('CI/CD', d.cicd)}
+${block('Style visuel', d.style)}
+${block('Couleurs', d.colors)}
+${block('Typographies', d.fonts)}
+${block('Design system', d.design_system)}
+${block('Accessibilité', d.a11y)}
+${block('Responsive', d.responsive)}
+${block('Animations', d.animations)}
+${block('Fonctionnalités essentielles', d.core_features)}
+${block('Fonctionnalités avancées', d.advanced_features)}
+${block('Pages', d.pages)}
+${block('Contenus', d.content)}
+${block('Intégrations', d.integrations)}
+${block('Clés API dispos', d.api_keys)}
+${block('SEO', d.seo)}
+${block('Sécurité', d.security)}
+${block('Conformité', d.legal)}
+${block('Tests', d.tests)}
+${block('Pipeline', d.pipeline)}
+${block('Fréquence maj', d.update_freq)}
+${block('Roadmap', d.roadmap)}
+${block('Stratégie mobile', d.mobile_strategy)}
+${block('Mobile natif', d.mobile_features)}
+${block('Références', d.references)}
+${block('Liens', d.links)}
+${block('Notes', d.notes)}
+
+=== INSTRUCTIONS GÉNÉRALES ===
+- Utilise les réponses ci‑dessus comme CONTRAINTES PRIORITAIRES pour toutes les décisions (architecture, design, fonctionnalités, déploiement).
+- Reprends la méthodologie du prompt principal (découverte -> plan -> génération GitHub -> guide débutant -> intégrations -> conversion mobile).
+- Crée automatiquement le repository GitHub, pousse la structure et le code selon le niveau de complexité.
+- Donne des étapes simples pour ouvrir et tester le projet localement et en ligne (GitHub Pages/Netlify/Vercel).
+- Explique chaque terme technique pour un débutant lors de la première utilisation.
+- Propose des améliorations proactives et vérifie la cohérence avec le budget/délai.
+
+Commence par récapituler en 5 points ce que tu as compris du questionnaire, puis propose un plan concret.
+`;
+
+    const form = document.getElementById('form');
+    const out = document.getElementById('out');
+    document.getElementById('generate').addEventListener('click', ()=>{
+      const d = serialize(form);
+      const prompt = basePrompt(d).trim();
+      out.hidden = false;
+      out.textContent = prompt;
+      navigator.clipboard?.writeText(prompt).catch(()=>{});
+    });
+  </script>
+</body>
+</html>
